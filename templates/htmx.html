@@ -1,8 +1,14 @@
 {% load static %}
 
-<script src="{% static 'js/htmx.min.js' %}" defer></script>
+{% block extrahead %}
+<script src="{% static 'js/htmx.min.js' %}"></script>
+
+{% endblock %}
+{% block footer %}
 <script>
-    document.body.addEventListener('htmx:configRequest', (event) => {
-    event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
-    })
+    console.log(document.body)
+    {% comment %} document.body.addEventListener('htmx:configRequest', (event) => {
+        event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+    }) {% endcomment %}
 </script>
+{% endblock %}

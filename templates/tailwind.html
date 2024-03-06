@@ -1,2 +1,42 @@
 {% load static %}
-<script src="js/tailwind.min.js"></script>
+{% comment %} gradient hue of django (#0C4B33, ##181d27) {% endcomment %}
+<script src="{% static 'js/tailwind.min.js' %}"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            clifford: '#da373d',
+            django: {
+              800: '#0C4B33',
+              900: '#181d27',
+            }
+          }
+        }
+      }
+    }
+</script>
+
+<style type="text/tailwindcss">
+    @layer components {
+      .card {
+        @apply bg-white shadow shadow-md rounded-lg p-6 text-black;
+      }
+
+      .btn {
+        @apply bg-clifford text-white font-bold py-2 px-4 rounded;
+      }
+    }
+
+    {% comment %} body {
+        @apply bg-django-900 text-white;
+
+        @screen dark {
+            @apply bg-django-800 text-white;
+        }
+
+        @screen light {
+            @apply bg-white text-black;
+        }
+    } {% endcomment %}
+</style>

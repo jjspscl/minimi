@@ -1,0 +1,12 @@
+
+/* define this color variables as hue of django (#0C4B33, ##181d27) */
+:root {
+    --django-green: #0C4B33;
+    --django-dark: #181d27;
+}
+
+/* override the body light/dark mode background and text based on the django colors to a gradient*/
+body {
+    background: linear-gradient(90deg, var(--django-green), var(--django-dark));
+    color: white;
+}

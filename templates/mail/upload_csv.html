@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}Minimi - Upload CSV File{% endblock %}
+
+{% block headers %}
+    <style type="text/tailwindcss">
+        .dropzone {
+            @apply border-2 border-dashed border-gray-300 p-4 text-center cursor-pointer rounded-lg;
+        }
+        .file-input {
+            display: none;
+        }
+    </style>
+{% endblock %}
+
+{% block footer %}
+<script>
+    const dropzone = document.getElementById('dropzone');
+    const fileInput = document.getElementById('fileInput');
+    const fileInfo = document.getElementById('fileInfo');
+
+    dropzone.addEventListener('dragover', (e) => {
+    e.preventDefault();
+        dropzone.classList.add('bg-blue-100');
+    });
+
+    dropzone.addEventListener('dragleave', () => {
+        dropzone.classList.remove('bg-blue-100');
+    });
+
+    dropzone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropzone.classList.remove('bg-blue-100');
+        const file = e.dataTransfer.files[0];
+        handleFile(file);
+    });
+
+    dropzone.addEventListener('click', () => {
+        fileInput.click();
+    });
+
+    const files = [];
+    fileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        handleFile(file);
+    });
+
+    document.getElementById('csv-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        {% comment %} 
+        const fileInput = document.getElementById('fileInput');
+        if (fileInput && fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+            console.log(file);
+        } else {
+            console.error('File input not found or no file selected');
+        } 
+        {% endcomment %}
+    });
+
+    const handleFile = (file) => {
+        if (file && file.type !== 'text/csv') {
+            alert('Please upload a CSV file.');
+            return;
+        }
+
+        fileInfo.innerHTML = `<div class="flex gap-2 items-center justify-center">
+            <span>File Name: ${file.name}</span>
+            <progress id='csv-progress' value='0' max='100'></progress>
+        </div>`;
+
+        const submitBtnContainer = document.getElementById('submit-csv-btn-container');
+        submitBtnContainer.style.display = file ? 'block' : 'none';
+    }
+
+    htmx.on('#csv-form', 'htmx:xhr:progress', function(evt) {
+        htmx.find('#csv-progress').setAttribute('value', evt.detail.loaded/evt.detail.total * 100)
+    });
+</script>
+{% endblock%}
+{% block content %}
+<div class="container mx-auto mt-10">
+    <div class="card text-center">
+        <h2 class="mb-5 text-4xl font-extrabold leading-none tracking-tight md:text-5xl lg:text-6xl">Upload CSV File</h2>
+        <form 
+            id="csv-form"
+            class="form w-1/3 mx-auto" 
+            hx-encoding='multipart/form-data' 
+            hx-trigger="submit"
+            hx-post='{{request.path}}' 
+            hx-target="this"
+            hx-swap="outerHTML" 
+        >
+            {% csrf_token %}
+            <div class="dropzone" id="dropzone">
+                <p class="mb-3">Drag and drop your CSV file here, or click to select.</p>
+                <input 
+                    id="fileInput"
+                    name="csv_file"
+                    type="file" 
+                    class="file-input" 
+                >
+                </div>
+            <div class="mt-3 text-center my-2" id="fileInfo"></div>
+            <span class="flex justify-center" id="submit-csv-btn-container" style="display: none;">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mx-auto">
+                    Upload
+                </button>
+            </span>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+
