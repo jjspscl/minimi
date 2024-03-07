@@ -1,0 +1,48 @@
+
+<div class="grid grid-col-1 gap-5" hx-ext="multi-swap">
+    {% include 'pagination.html' with page=results hxSwap="innerHtml" hxTarget="#classifier-table-body" hxSelect=".classifier-row" %}
+        
+    <table id="mail-table" class="min-w-full leading-normal">
+        <thead>
+            <tr>
+                <th
+                    class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
+                >
+                    ID
+                </th>
+                <th
+                    class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
+                >
+                    Category
+                </th>
+                <th
+                    class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
+                >
+                    Content
+                </th>
+            </tr>
+        </thead>
+        <tbody id="classifier-table-body">
+            {% for result in results %}
+                <tr class="classifier-row">
+                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        <p class="text-gray-900 whitespace-no-wrap">{{ result.0 }}</p>
+                    </td>
+                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        <p class="text-gray-900 whitespace-no-wrap">{{ result.1 }}</p>
+                    </td>
+                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                        <p class="text-gray-900 whitespace-no-wrap">{{ result.2 }}</p>
+                    </td>
+                </tr>
+            {% endfor %}
+            {% if results|length == 0 %}
+            <tr>
+                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm" colspan="3">
+                    <p class="text-gray-900 whitespace-no-wrap">No emails to process</p>
+                </td>
+            </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,46 @@
+{% comment %} REQUIRES hx-ext="multi-swap" in parent {% endcomment %}
+<nav 
+    id="pagination"
+    class="pagination flex items-center justify-center mt-2" 
+    role="navigation" 
+    aria-label="pagination"
+>
+    <ul class="pagination-list">
+        {% if page.has_previous %}
+            <button 
+                class="pagination-link" 
+                aria-label="Goto page 1" 
+                hx-get="?page=1"
+                hx-swap="multi:#pagination:outerHTML,{{ hxTarget }}:{{ hxSwap }}"
+            >First Page</button>
+            <button 
+                class="pagination-link btn-primary" 
+                hx-get="?page={{ page.previous_page_number }}"
+                hx-swap="multi:#pagination:outerHTML,{{ hxTarget }}:{{ hxSwap }}"
+            >«</button>
+        {% endif %}
+
+        <button 
+            class="pagination-link btn-primary" 
+            aria-label="Goto page {{ page.number }}"
+        >{{ page.number }}</button>
+
+        {% if page.has_next %}
+            <button 
+                class="pagination-link btn-primary" 
+                hx-get="?page={{ page.next_page_number }}"
+                hx-swap="multi:#pagination:outerHTML,{{ hxTarget }}:{{ hxSwap }}"
+            >
+                »
+            </button>
+            <button 
+                class="pagination-link" 
+                aria-label="Goto page {{ page.paginator.num_pages }}"
+                hx-get="?page={{ page.paginator.num_pages }}"
+                hx-swap="multi:#pagination:outerHTML,{{ hxTarget }}:{{ hxSwap }}"
+            >
+                Last Page
+            </button>
+        {% endif %}
+    </ul>
+</nav>

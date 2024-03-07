@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Minimi - ML Predictor{% endblock %}
+
+{% block headers %}
+    <style type="text/tailwindcss">
+       
+    </style>
+{% endblock %}
+
+{% block footer %}
+
+
+{% endblock%}
+
+{% block content %}
+<div class="container mx-auto mt-10">
+    <div class="card text-center">
+        <h2 class="mb-5 text-4xl font-extrabold leading-none tracking-tight md:text-5xl lg:text-6xl">ML Predictor</h2>
+        <div id="ml_predictor" class="flex justify-center">
+            <button 
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" 
+                hx-post="{% url 'ml_train' %}" 
+                hx-target="#ml_predictor"
+                hx-headers='{ "X-CSRFToken": "{{ csrf_token }}" }'
+            >
+                RUN ML Predictor
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
